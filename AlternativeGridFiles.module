@@ -1,0 +1,211 @@
+<?php
+
+/**
+ * Alternative grid config for imagefile
+ * @author  Luis Santiago "blad"
+ * 
+ * ProcessWire 2.x 
+ * Copyright (C) 2010 by Ryan Cramer 
+ * Licensed under GNU/GPL v2, see LICENSE.TXT
+ * 
+ * http://www.processwire.com
+ * http://www.ryancramer.com
+ *
+ */
+
+class AlternativeGridFiles extends WireData implements Module, ConfigurableModule {
+
+    public static function getModuleInfo() {
+        return array(
+            'title' => 'Alternative grid for multiple files', 
+            'version' => 1, 
+            'summary' => "This module shows an alternative view in file fields. Icons, columns and more...",
+            'href' => 'https://github.com/LuisSantiago/AlternativeGridFiles',
+            'author' => 'Blad',
+            'singular' => true, 
+            'icon' => 'pencil-square-o', 
+            'autoload' => true
+            );
+    }
+
+    const adminPageName = 'AlternativeGridFiles';
+
+  protected static $configDefaults = array(
+        // global
+        "imgextensions" => "jpg|png|gif|bmp",
+        "archextensions" => "rar|zip|tar",
+        "txtextensions" => "txt|doc|log",
+        "ncolumns" => "32",
+        "position" => "before",
+        "icolor" => "#CCC",
+        "icsize" => "5",
+        "numberchars" => "13"
+    );
+
+
+    public function init() {
+            $this->addHookAfter('Page::render', $this, 'altGrid2configAfter');
+        }
+
+
+    public function altGrid2configAfter(HookEvent $event) {
+
+$js = <<< _END
+<script type="text/javascript">
+$(document).ready(function() {
+
+var lutxt = ($('a.InputfieldFileName'));
+
+lutxt.filter(function() {
+    return $(this).attr('href').match(/\.({$this->imgextensions})/i);
+}).parent().{$this->position}( "<i class='icono fa fa-file-image-o fa-{$this->icsize}x'></i>" );
+
+
+
+lutxt.filter(function() {
+    return $(this).attr('href').match(/\.(pdf)/i);
+}).parent().{$this->position}( "<i class='icono fa fa-file-pdf-o fa-{$this->icsize}x'></i>" );
+
+
+lutxt.filter(function() {
+    return $(this).attr('href').match(/\.({$this->archextensions})/i);
+}).parent().{$this->position}( "<i class='icono fa fa-file-archive-o fa-{$this->icsize}x'></i>" );
+
+
+
+lutxt.filter(function() {
+    return $(this).attr('href').match(/\.({$this->txtextensions})/i);
+}).parent().{$this->position}( "<i class='icono fa fa-file-pdf-o fa-{$this->icsize}x'></i>" );
+
+
+lutxt.each(function(){
+    len=$(this).text().length;
+    if(len>{$this->numberchars})
+    {
+      $(this).text($(this).text().substr(0,{$this->numberchars})+'...');
+    }
+  }); 
+
+});
+</script>
+
+<style>
+.Inputfields > li > .ui-widget-content > ul.InputfieldFileList > li,
+.Inputfields > li > .InputfieldContent > ul.InputfieldFileList > li {
+    width: 100%;
+        float: left;
+        width: {$this->ncolumns}%;
+        margin-right:1%;
+}
+a.InputfieldFileName{
+    width:100px;
+}
+.icono {
+padding: 10px 10px 10px 10px;
+text-align: center;
+width: 100%;
+color: {$this->icolor};
+text-shadow: 1px 2px 3px #fCf0c3,
+            -1px -1px 1px #2C2003;
+      };
+
+.borrado{
+    color:red;
+}
+</style>
+
+_END;
+
+
+            $event->return = str_replace("</body>","$js</body>",$event->return);
+}
+
+
+
+public static function getModuleConfigInputfields(array $data) {
+        $inputfields = new InputfieldWrapper(); 
+
+        foreach(self::$configDefaults as $key => $value) {
+            if(!isset($data[$key]) || $data[$key]=='') $data[$key] = $value;
+        }
+
+   $field = wire('modules')->get('InputfieldRadios');
+        $field->attr('name', 'ncolumns');
+        $field->label = __('Number of columns'); 
+        $field->addOption('49', '2');
+        $field->addOption('32', '3');
+        $field->addOption('24', '4');
+        $field->addOption('19', '5');
+        if(isset($data['ncolumns'])) $field->value = $data['ncolumns'];
+        $field->optionColumns = 1; 
+        $inputfields->add($field);   
+
+
+    $field = wire('modules')->get('InputfieldText');
+        $field->name = 'imgextensions';
+        $field->label = __('Image files extensions'); 
+        $field->icon = 'file-image-o';
+        $field->notes = __('This extensions show the fontawesome fa-file-image-o image for the selected extensions. For example jpg|png|gif separated by |'); 
+        if(isset($data['imgextensions'])) $field->value = $data['imgextensions'];
+        $inputfields->add($field); 
+
+    $field = wire('modules')->get('InputfieldText');
+        $field->name = 'archextensions';
+        $field->icon = 'fa-file-archive-o';
+        $field->label = __('Compressed files extensions'); 
+        $field->notes = __('This extensions show the fontawesome fa fa-file-archive-o image for the selected extensions. For example rar|zip|tar separated by |'); 
+        if(isset($data['archextensions'])) $field->value = $data['archextensions'];
+        $inputfields->add($field); 
+
+    $field = wire('modules')->get('InputfieldText');
+        $field->name = 'txtextensions';
+        $field->icon = 'fa-file-archive-o';
+        $field->label = __('Text files extensions'); 
+        $field->notes = __('This extensions show the fontawesome fa fa-file-text-o image for the selected extensions. For example txt|doc|log separated by |'); 
+        if(isset($data['txtextensions'])) $field->value = $data['txtextensions'];
+        $inputfields->add($field); 
+
+
+    $field = wire('modules')->get('InputfieldText');
+        $field->name = 'numberchars';
+        $field->label = __('Maximum number of characters for file name');
+        if(isset($data['numberchars'])) $field->value = $data['numberchars'];
+        $inputfields->add($field);
+
+
+    $field = wire('modules')->get('InputfieldRadios');
+        $field->attr('name', 'position');
+        $field->label = __('Icon position'); 
+        $field->addOption('after', __('After the file name'));
+        $field->addOption('before', __('Before the file name'));
+        if(isset($data['position'])) $field->value = $data['position'];
+        $field->optionColumns = 1; 
+        $inputfields->add($field);      
+
+   $field = wire('modules')->get('InputfieldRadios');
+        $field->attr('name', 'icsize');
+        $field->label = __('Icon size'); 
+        $field->addOption('1', '1');
+        $field->addOption('2', '2');
+        $field->addOption('3', '3');
+        $field->addOption('4', '4');
+        $field->addOption('5', '5');
+        if(isset($data['icsize'])) $field->value = $data['icsize'];
+        $field->notes = __('5 is the biggest');
+        $field->optionColumns = 1; 
+        $inputfields->add($field);   
+
+    $field = wire('modules')->get('InputfieldText');
+        $field->name = 'icolor';
+        $field->label = __('Icon color');
+        $field->notes = __('Examples: #CCC, black, #FEAFEA');
+        if(isset($data['icolor'])) $field->value = $data['icolor'];
+        $inputfields->add($field);
+
+        return $inputfields; 
+    }
+
+
+
+
+}
