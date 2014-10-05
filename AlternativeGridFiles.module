@@ -18,7 +18,7 @@ class AlternativeGridFiles extends WireData implements Module, ConfigurableModul
     public static function getModuleInfo() {
         return array(
             'title' => 'Alternative grid for multiple files', 
-            'version' => 1, 
+            'version' => 2, 
             'summary' => "This module shows an alternative view in file fields. Icons, columns and more...",
             'href' => 'https://github.com/LuisSantiago/AlternativeGridFiles',
             'author' => 'Blad',
@@ -78,9 +78,17 @@ lutxt.filter(function() {
 }).parent().{$this->position}( "<i class='icono fa fa-file-pdf-o fa-{$this->icsize}x'></i>" );
 
 
-lutxt.each(function(){
+$('span.InputfieldFileLanguageFilename').each(function(){
     len=$(this).text().length;
     if(len>{$this->numberchars})
+    {
+      $(this).text($(this).text().substr(0,{$this->numberchars})+'...');
+    }
+  }); 
+
+lutxt.each(function(){
+    len2=$(this).text().length;
+    if(len2>{$this->numberchars})
     {
       $(this).text($(this).text().substr(0,{$this->numberchars})+'...');
     }
