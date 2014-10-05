@@ -32,12 +32,12 @@ class AlternativeGridFiles extends WireData implements Module, ConfigurableModul
 
   protected static $configDefaults = array(
         // global
-        "imgextensions" => "jpg|png|gif|bmp",
+        "imgextensions" => "jpg|jpeg|png|gif|bmp",
         "archextensions" => "rar|zip|tar",
         "txtextensions" => "txt|doc|log",
         "ncolumns" => "32",
         "position" => "before",
-        "icolor" => "#CCC",
+        "icolor" => "#555",
         "icsize" => "5",
         "numberchars" => "13"
     );
@@ -76,6 +76,13 @@ lutxt.filter(function() {
 lutxt.filter(function() {
     return $(this).attr('href').match(/\.({$this->txtextensions})/i);
 }).parent().{$this->position}( "<i class='icono fa fa-file-pdf-o fa-{$this->icsize}x'></i>" );
+
+lutxt.filter(function() {
+    return $(this).attr('href').match(/\.(json)/i);
+}).parent().{$this->position}( "<i class='icono fa fa-language fa-{$this->icsize}x'></i>" );
+
+
+
 
 
 $('span.InputfieldFileLanguageFilename').each(function(){
@@ -117,9 +124,6 @@ text-shadow: 1px 2px 3px #fCf0c3,
             -1px -1px 1px #2C2003;
       };
 
-.borrado{
-    color:red;
-}
 </style>
 
 _END;
