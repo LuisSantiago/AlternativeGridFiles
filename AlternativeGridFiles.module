@@ -184,6 +184,24 @@ public static function getModuleConfigInputfields(array $data) {
         $field->notes = __('This extensions show the fontawesome fa fa-file-text-o image for the selected extensions. For example txt|doc|log separated by |'); 
         if(isset($data['txtextensions'])) $field->value = $data['txtextensions'];
         $inputfields->add($field); 
+        
+    
+    $field = wire('modules')->get('InputfieldText');
+        $field->name = 'vidextensions';
+        $field->icon = 'fa-file-video-o';
+        $field->label = __('Video files extensions'); 
+        $field->notes = __('This extensions show the fontawesome fa fa-file-video-o image for the selected extensions. For example mp4|avi|mkv separated by |'); 
+        if(isset($data['vidextensions'])) $field->value = $data['vidextensions'];
+        $inputfields->add($field); 
+        
+    
+    $field = wire('modules')->get('InputfieldText');
+        $field->name = 'audiextensions';
+        $field->icon = 'fa-file-audio-o';
+        $field->label = __('Audio files extensions'); 
+        $field->notes = __('This extensions show the fontawesome fa-file-audio-o image for the selected extensions. For example mp3|ogg|wav separated by |'); 
+        if(isset($data['audiextensions'])) $field->value = $data['audiextensions'];
+        $inputfields->add($field); 
 
 
     $field = wire('modules')->get('InputfieldText');
