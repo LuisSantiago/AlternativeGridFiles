@@ -187,6 +187,7 @@ public static function getModuleConfigInputfields(array $data) {
 
     $field = wire('modules')->get('InputfieldRadios');
         $field->attr('name', 'position');
+        $field->columnWidth = 33;
         $field->label = __('Icon position'); 
         $field->addOption('after', __('After the file name'));
         $field->addOption('before', __('Before the file name'));
@@ -196,6 +197,7 @@ public static function getModuleConfigInputfields(array $data) {
 
    $field = wire('modules')->get('InputfieldRadios');
         $field->attr('name', 'icsize');
+        $field->columnWidth = 33;
         $field->label = __('Icon size'); 
         $field->addOption('1', '1');
         $field->addOption('2', '2');
@@ -209,6 +211,7 @@ public static function getModuleConfigInputfields(array $data) {
 
     $field = wire('modules')->get('InputfieldText');
         $field->name = 'icolor';
+        $field->columnWidth = 34;
         $field->label = __('Icon color');
         $field->notes = __('Examples: #CCC, black, #FEAFEA');
         if(isset($data['icolor'])) $field->value = $data['icolor'];
