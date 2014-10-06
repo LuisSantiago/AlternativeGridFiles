@@ -35,6 +35,8 @@ class AlternativeGridFiles extends WireData implements Module, ConfigurableModul
         "imgextensions" => "jpg|jpeg|png|gif|bmp",
         "archextensions" => "rar|zip|tar",
         "txtextensions" => "txt|doc|log",
+        "vidextensions" => "mp4|avi|mkv|flv",
+        "audiextensions" => "mp3|ogg|wav",
         "ncolumns" => "32",
         "position" => "before",
         "icolor" => "#555",
@@ -81,7 +83,13 @@ lutxt.filter(function() {
     return $(this).attr('href').match(/\.(json)/i);
 }).parent().{$this->position}( "<i class='icono fa fa-language fa-{$this->icsize}x'></i>" );
 
+lutxt.filter(function() {
+    return $(this).attr('href').match(/\.({$this->vidextensions})/i);
+}).parent().{$this->position}( "<i class='icono fa-file-video-o fa-{$this->icsize}x'></i>" );
 
+lutxt.filter(function() {
+    return $(this).attr('href').match(/\.({$this-audiextensions})/i);
+}).parent().{$this->position}( "<i class='icono fa-file-audio-o fa-{$this->icsize}x'></i>" );
 
 
 
