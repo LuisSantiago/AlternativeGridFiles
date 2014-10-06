@@ -88,7 +88,7 @@ lutxt.filter(function() {
 }).parent().{$this->position}( "<i class='icono fa-file-video-o fa-{$this->icsize}x'></i>" );
 
 lutxt.filter(function() {
-    return $(this).attr('href').match(/\.({$this-audiextensions})/i);
+    return $(this).attr('href').match(/\.({$this->audiextensions})/i);
 }).parent().{$this->position}( "<i class='icono fa-file-audio-o fa-{$this->icsize}x'></i>" );
 
 
