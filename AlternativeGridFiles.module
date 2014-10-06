@@ -149,16 +149,7 @@ public static function getModuleConfigInputfields(array $data) {
             if(!isset($data[$key]) || $data[$key]=='') $data[$key] = $value;
         }
 
-   $field = wire('modules')->get('InputfieldRadios');
-        $field->attr('name', 'ncolumns');
-        $field->label = __('Number of columns'); 
-        $field->addOption('49', '2');
-        $field->addOption('32', '3');
-        $field->addOption('24', '4');
-        $field->addOption('19', '5');
-        if(isset($data['ncolumns'])) $field->value = $data['ncolumns'];
-        $field->optionColumns = 1; 
-        $inputfields->add($field);   
+
 
 
     $field = wire('modules')->get('InputfieldText');
@@ -203,9 +194,22 @@ public static function getModuleConfigInputfields(array $data) {
         if(isset($data['audiextensions'])) $field->value = $data['audiextensions'];
         $inputfields->add($field); 
 
+   $field = wire('modules')->get('InputfieldRadios');
+        $field->attr('name', 'ncolumns');
+                $field->columnWidth = 50;
+        $field->label = __('Number of columns'); 
+        $field->addOption('49', '2');
+        $field->addOption('32', '3');
+        $field->addOption('24', '4');
+        $field->addOption('19', '5');
+        if(isset($data['ncolumns'])) $field->value = $data['ncolumns'];
+        $field->optionColumns = 1; 
+        $inputfields->add($field);   
+
 
     $field = wire('modules')->get('InputfieldText');
         $field->name = 'numberchars';
+                $field->columnWidth = 50;
         $field->label = __('Maximum number of characters for file name');
         if(isset($data['numberchars'])) $field->value = $data['numberchars'];
         $inputfields->add($field);
