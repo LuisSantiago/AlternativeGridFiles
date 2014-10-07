@@ -18,7 +18,7 @@ class AlternativeGridFiles extends WireData implements Module, ConfigurableModul
     public static function getModuleInfo() {
         return array(
             'title' => 'Alternative grid for multiple files', 
-            'version' => 5, 
+            'version' => 6, 
             'summary' => "This module shows an alternative view in file fields. Icons, columns and more...",
             'href' => 'https://github.com/LuisSantiago/AlternativeGridFiles',
             'author' => 'Blad',
@@ -46,8 +46,9 @@ class AlternativeGridFiles extends WireData implements Module, ConfigurableModul
 
 
     public function init() {
+        if($this->page->template == 'admin'){ 
             $this->addHookAfter('Page::render', $this, 'altGrid2configAfter');
-        }
+        }}
 
 
     public function altGrid2configAfter(HookEvent $event) {
