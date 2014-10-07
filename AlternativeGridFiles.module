@@ -45,10 +45,14 @@ class AlternativeGridFiles extends WireData implements Module, ConfigurableModul
     );
 
 
-    public function init() {
-        if($this->page->template == 'admin'){ 
+    public function ready() {
+
+        $esteproceso = wire('page')->process;
+
+        if($this->page->template == 'admin' && $esteproceso == 'ProcessPageEdit'){ 
             $this->addHookAfter('Page::render', $this, 'altGrid2configAfter');
-        }}
+            }
+        }
 
 
     public function altGrid2configAfter(HookEvent $event) {
@@ -154,9 +158,6 @@ public static function getModuleConfigInputfields(array $data) {
             if(!isset($data[$key]) || $data[$key]=='') $data[$key] = $value;
         }
 
-
-
-
     $field = wire('modules')->get('InputfieldText');
         $field->name = 'imgextensions';
         $field->label = __('Image files extensions'); 
@@ -254,8 +255,4 @@ public static function getModuleConfigInputfields(array $data) {
 
         return $inputfields; 
     }
-
-
-
-
 }
