@@ -44,7 +44,7 @@ class AlternativeGridFiles extends WireData implements Module, ConfigurableModul
         "numberchars" => "13"
     );
 
-
+    public function init() {}
     public function ready() {
 
         $esteproceso = wire('page')->process;
