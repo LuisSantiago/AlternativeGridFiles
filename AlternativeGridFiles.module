@@ -31,7 +31,6 @@ class AlternativeGridFiles extends WireData implements Module, ConfigurableModul
     const adminPageName = 'AlternativeGridFiles';
 
   protected static $configDefaults = array(
-        // global
         "imgextensions" => "jpg|jpeg|png|gif|bmp",
         "archextensions" => "rar|zip|tar",
         "txtextensions" => "txt|doc|log",
