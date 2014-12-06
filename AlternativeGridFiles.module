@@ -18,9 +18,9 @@ class AlternativeGridFiles extends WireData implements Module, ConfigurableModul
     public static function getModuleInfo() {
         return array(
             'title' => 'Alternative grid for multiple files', 
-            'version' => 100, 
+            'version' => 7, 
             'summary' => "This module shows an alternative view in file fields. Icons, columns and more...",
-            'href' => 'https://github.com/LuisSantiago/AlternativeGridFiles',
+            'href' => 'http://modules.processwire.com/modules/alternative-grid-files/',
             'author' => 'Blad',
             'singular' => true, 
             'icon' => 'pencil-square-o', 
